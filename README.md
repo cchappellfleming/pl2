@@ -1,5 +1,4 @@
 # GEOM 99 - Practical Lab 2
-## ArcGIS Online & ArcGIS as a Platform
 
 ## ArcGIS Online Developers
 ### Developers Detials Item Page
