@@ -118,9 +118,65 @@
     popupTemplate: popupTemplate
 
  });
+       
+  }
  graphicsLayer.add(polygonGraphic);
 
  });
+ // polygon with curve segments (red heart) graphic
+      GraphicsOverlay curvedGraphicOverlay = new GraphicsOverlay();
+      // create a simple fill symbol with outline
+      SimpleLineSymbol curvedLineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, ColorUtil.colorToArgb(Color.BLACK), 1);
+      SimpleFillSymbol curvedFillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.SOLID, ColorUtil.colorToArgb(Color.RED), curvedLineSymbol);
+      SimpleRenderer curvedRenderer = new SimpleRenderer(curvedFillSymbol);
+      curvedGraphicOverlay.setRenderer(curvedRenderer);
+      // create a heart-shaped graphic and add it to the map view
+      Point originPointForHeart = new Point(40e5, 5e5, SpatialReferences.getWebMercator());
+      Geometry heartGeometry = makeHeartGeometry(originPointForHeart);
+      Graphic heartGraphic = new Graphic(heartGeometry);
+      curvedGraphicOverlay.getGraphics().add(heartGraphic);
+      mapView.getGraphicsOverlays().add(curvedGraphicOverlay);
+
+    // define the side length of the square that contains the heart shape
+    double sideLength = 10e5;
+    // define a spatial reference to create segments with
+    SpatialReference spatialReference = centerOfHeart.getSpatialReference();
+    // define the x and y coordinates to simplify the calculation
+    double minX = centerOfHeart.getX() - 0.5 * sideLength;
+    double minY = centerOfHeart.getY() - 0.5 * sideLength;
+    // define the radius of the arcs
+    double arcRadius = sideLength * 0.25;
+
+    // construct the bottom left curve
+    Point leftCurveStart = new Point(centerOfHeart.getX(), minY);
+    Point leftCurveEnd = new Point(minX, minY + 0.75 * sideLength);
+    Point leftControlPoint1 = new Point(centerOfHeart.getX(), minY + 0.25 * sideLength);
+    Point leftControlPoint2 = new Point(minX, centerOfHeart.getY());
+    CubicBezierSegment leftCurve = new CubicBezierSegment(leftCurveStart, leftControlPoint1, leftControlPoint2, leftCurveEnd, spatialReference);
+
+    // construct the top left arc
+    Point leftArcCenter = new Point(minX + 0.25 * sideLength, minY + 0.75 * sideLength);
+    EllipticArcSegment leftArc = EllipticArcSegment.createCircularEllipticArc(leftArcCenter, arcRadius, Math.PI, -Math.PI, spatialReference);
+
+    // construct the top right arc
+    Point rightArcCenter = new Point(minX + 0.75 * sideLength, minY + 0.75 * sideLength);
+    EllipticArcSegment rightArc = EllipticArcSegment.createCircularEllipticArc(rightArcCenter, arcRadius, Math.PI, -Math.PI, spatialReference);
+
+    // construct the bottom right curve
+    Point rightCurveStart = new Point(minX + sideLength, minY + 0.75 * sideLength);
+    Point rightControlPoint1 = new Point(minX + sideLength, centerOfHeart.getY());
+    CubicBezierSegment rightCurve = new CubicBezierSegment(rightCurveStart, rightControlPoint1, leftControlPoint1, leftCurveStart, spatialReference);
+
+    // create a part and add a collection of segments to it to define the heart shape
+    Part part = new Part(spatialReference);
+    part.addAll(Arrays.asList(leftCurve, leftArc, rightArc, rightCurve));
+
+    // use a polygon builder to construct a heart shape from the parts above
+    PolygonBuilder heartShape = new PolygonBuilder(spatialReference);
+    heartShape.getParts().add(part);
+
+    // return the geometry of the heart-shaped polygon
+    return heartShape.toGeometry();
 </script>
 </head>
 <body>
