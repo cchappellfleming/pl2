@@ -7,7 +7,7 @@ https://developers.arcgis.com/layers/93ec0808ea0c4c58bbb35086a3e93fd4
 ```
 ### ArcGIS Online Items Page
 ```
-https://co63lcgvsizsq1xa.maps.arcgis.com/home/item.html?id=93ec0808ea0c4c58bbb35086a3e93fd4&sublayer=0
+https://co63lcgvsizsq1xa.maps.arcgis.com/home/item.html?id=93ec0808ea0c4c58bbb35086a3e93fd4
 ```
 ###Rest API
 ```
