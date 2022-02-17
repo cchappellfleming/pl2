@@ -25,7 +25,7 @@
 
     ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
 
-  esriConfig.apiKey = "YOUR_API_KEY";
+  esriConfig.apiKey = "AIzaSyCM-WWHYHIKY-do4kquMy9Z4wQaQx51AuE";
 
   const map = new Map({
     basemap: "arcgis-topographic" //Basemap layer service
@@ -61,7 +61,6 @@
  });
  graphicsLayer.add(pointGraphic);
 
-    // Create a line geometry
  const polyline = {
     type: "polyline",
     paths: [
@@ -81,8 +80,7 @@
     symbol: simpleLineSymbol
  });
  graphicsLayer.add(polylineGraphic);
-
- // Create a polygon geometry
+ 
  const polygon = {
     type: "polygon",
     rings: [
