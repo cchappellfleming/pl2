@@ -34,12 +34,33 @@
   const view = new MapView({
     map: map,
     center: [-79.45481, 44.05138], //Longitude, latitude
-    zoom: 16,
+    zoom: 15,
     container: "viewDiv"
  });
 
  const graphicsLayer = new GraphicsLayer();
  map.add(graphicsLayer);
+ 
+ const polyline = {
+    type: "polyline",
+    paths: [
+        [-79.48707, 44.04824], //Longitude, latitude
+        [-79.45481, 44.05138], //Longitude, latitude
+        [-79.47883, 43.97113]  //Longitude, latitude
+    ]
+ };
+ const simpleLineSymbol = {
+    type: "simple-line",
+    style: "dash-dot",
+    color: [255, 255, 255], // White
+    width: 3
+ };
+
+ const polylineGraphic = new Graphic({
+    geometry: polyline,
+    symbol: simpleLineSymbol
+ });
+ graphicsLayer.add(polylineGraphic);
 
  const point = { //Create a point
     type: "point",
